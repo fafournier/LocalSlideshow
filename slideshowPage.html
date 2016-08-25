@@ -1,0 +1,188 @@
+<html>
+  <head>
+    <title>Local Slideshow</title>
+    <script charset="utf-8">
+      var files = [];
+      var index = 0;
+      var timing = 5;
+      var timer = null;
+
+      function addEvent(){
+        document.querySelector("input#fileSelector").onclick = function() {
+          stopSlideShow();
+          document.getElementById('statusBtn').innerHTML = "&#8635;";
+        };
+
+        document.querySelector("input#fileSelector").onchange = function() {
+          if(this.files && this.files.length>0) files = this.files;
+          document.getElementById('totalNumImages').value = files.length
+          // console.log(files);
+          startSlideShow();
+        };
+
+        document.querySelector("input#timingChange").onchange = function() {
+          stopSlideShow();
+          timing=(this.value < 0)? 0: this.value;
+          startSlideShow();
+        };
+
+        document.querySelector("input#imageId").onchange = function() {
+          stopSlideShow();
+          index=((this.value < 0)? 0: ((files && files.length && this.value > files.length)? ((files && files.length)? files.length: 0): this.value));
+          document.getElementById('imageId').value = index;
+          if(files && files.length >0)
+            stepSlideShow();
+        };
+
+        document.querySelector("input#startBtn").onclick = function() {
+          startSlideShow();
+        };
+
+        document.querySelector("input#stopBtn").onclick = function() {
+          stopSlideShow();
+        };
+
+        document.querySelector("input#previousBtn").onclick = function() {
+          stopSlideShow()
+          if( index-1 >= 0) index = index-2;
+          if(files && files.length >0)
+            stepSlideShow();
+        };
+
+        document.querySelector("input#nextBtn").onclick = function() {
+          stopSlideShow()
+          // if(index+1 < files.length) index++;
+          if(files && files.length >0)
+            stepSlideShow();
+        };
+
+        document.querySelector("input#zoomMax").onclick = function() {
+          if(this.checked){
+            if(window.innerWidth >window.innerHeight)
+              document.getElementById('imageDisplayed').style.height = "100%";
+            else
+              document.getElementById('imageDisplayed').style.width = "100%";
+          }else{
+            document.getElementById('imageDisplayed').style.height = "auto";
+            document.getElementById('imageDisplayed').style.width = "auto";
+          }
+        };
+
+      }
+
+      function stepSlideShow(){
+        if(index > files.length) stopSlideShow();
+        // console.log("file", index, files[index], URL.createObjectURL(files[index]), document.getElementById('imageDisplayed'));
+        if(files && files[index] && files[index].type.indexOf("image/") == 0){
+          document.getElementById('imageId').value = index;
+          document.getElementById('imageDisplayed').src = URL.createObjectURL(files[index]);
+          document.getElementById('fileName').innerHTML = "<a href='"+URL.createObjectURL(files[index])+"' target='_blank;'><small>"+files[index].webkitRelativePath+"</small></a>";
+          if(index+1 < files.length)
+            document.getElementById('imagePrefetchNext').src = URL.createObjectURL(files[index+1]);
+          if(index+2 < files.length)
+            document.getElementById('imagePrefetchNextNext').src = URL.createObjectURL(files[index+2]);
+          if(index-1 >0)
+            document.getElementById('imagePrefetchPrevious').src = URL.createObjectURL(files[index-1]);
+          index++;
+        }else{
+          index++;
+          stepSlideShow();
+        }
+      }
+
+      function startSlideShow(){
+        document.getElementById('statusBtn').innerHTML = "&#9658;";
+        document.getElementById('startBtn').style.display = "none";
+        document.getElementById('stopBtn').style.display = "inline";
+        stepSlideShow();
+        timer = setInterval( function () {
+          stepSlideShow();
+        }, timing*1000);
+      }
+
+      function stopSlideShow(){
+        clearInterval(timer);
+        document.getElementById('statusBtn').innerHTML = "&#9723;";
+        document.getElementById('stopBtn').style.display = "none";
+        document.getElementById('startBtn').style.display = "inline";
+      }
+
+      var tid = setInterval(function () {
+          if (document.readyState !== 'complete') return;
+          clearInterval(tid);
+          addEvent();
+      }, 200);
+
+    </script>
+    <style>
+      body {
+        background-color: black; color: white; height: 95%; width: 95%;
+      }
+
+      a {
+        color: grey;
+      }
+
+      #imageDisplayed {
+        max-width: 100%; max-height: calc(100% - 150px); width: auto; height: auto; margin-top: 10px;
+      }
+      #imagePrefetchNext, #imagePrefetchNextNext, #imagePrefetchPrevious  {
+        display: none;
+      }
+
+      input[type=number] {
+        max-width:40px;
+      }
+
+      div.image-container {
+        width: 100%;
+        height: 100%;
+        text-align: center;
+      }
+
+      div.image-container p#fileName {
+        text-align: center;
+      }
+
+      div.settings {
+        text-align: center;
+      }
+
+      /*.stitched */
+      input[type=button] {
+        cursor: pointer;
+        position: relative;
+        margin: 5px;
+        background: #ff0030;
+        color: #fff;
+        font-weight: bold;
+        border: 2px dashed #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 0 4px #ff0030, 2px 1px 6px 4px rgba(10, 10, 0, 0.5);
+        text-shadow: -1px -1px #aa3030;
+        font-weight: normal;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="image-container">
+      <img src="" id="imageDisplayed" />
+      <img src="" id="imagePrefetchNext" />
+      <img src="" id="imagePrefetchNextNext" />
+      <img src="" id="imagePrefetchPrevious" />
+      <p id="fileName"></p>
+    </div>
+
+    <div class="settings">
+      <input id="fileSelector" type="file" webkitdirectory>
+      <input type="button" id="startBtn" value="&#9655;">
+      <span id="statusBtn">&#9723;</span>
+      <input type="button" id="stopBtn" value="&#9723;" style="display: none;">
+      <small>Timing (s):</small><input id="timingChange" type="number" value="5">
+      <input type="checkbox" id="zoomMax"><small> Zoom</small>
+      <input type="button" id="previousBtn" value="&#9667;&#9667;"> <input type="button" id="nextBtn" value="&#9657;&#9657;">
+      <input id="imageId" type="number" value="0"> / <input id="totalNumImages" disabled="disabled" type="number" value="0">
+    </div>
+  </body>
+</html>
