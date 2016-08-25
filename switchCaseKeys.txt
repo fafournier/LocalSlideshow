@@ -1,0 +1,51 @@
+document.onkeydown = function () {
+        switch (event.keyCode) {              
+          case 13: // Enter
+              break;
+          case 38: // Up arrow
+              break;
+          case 40: // Down arrow
+              break;
+          case 37: // Left arrow
+              break;
+          case 39: // Right arrow
+              break;
+          case 27: // Escape
+              break;
+          case 32: // Spacebar
+              break;
+          case 17: // Ctrl
+              break;
+          case 18: // Alt
+              break;
+          case 9: // Tab
+              break;
+          case 16: // Shift
+              break;
+          case 20: // Caps-lock
+              break;
+          case 91: // Windows key
+              break;
+          case 93: // Windows option key
+              break;
+          case 8: // Backspace
+              break;
+          case 36: // Home
+              break;
+          case 35: // End
+              break;
+          case 45: // Insert
+              break;
+          case 46: // Delete
+              break;
+          case 33: // Page Up
+              break;
+          case 34: // Page Down
+              break;
+          case 144: // Numlock
+              break;
+          case 145: // Scroll-lock
+              break;
+          case 19: // Pause-break
+          }
+        }
