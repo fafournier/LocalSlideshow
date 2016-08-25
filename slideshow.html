@@ -44,17 +44,11 @@
         };
 
         document.querySelector("input#previousBtn").onclick = function() {
-          stopSlideShow()
-          if( index-1 >= 0) index = index-2;
-          if(files && files.length >0)
-            stepSlideShow();
+          previousSlide();
         };
 
         document.querySelector("input#nextBtn").onclick = function() {
-          stopSlideShow()
-          // if(index+1 < files.length) index++;
-          if(files && files.length >0)
-            stepSlideShow();
+          nextSlide();
         };
 
         document.querySelector("input#zoomMax").onclick = function() {
@@ -108,12 +102,67 @@
         document.getElementById('startBtn').style.display = "inline";
       }
 
+      function nextSlide(){
+        stopSlideShow()
+        // if(index+1 < files.length) index++;
+        if(files && files.length >0)
+          stepSlideShow();
+      }
+
+      function previousSlide(){
+        stopSlideShow()
+        if( index-1 >= 0) index = index-2;
+        if(files && files.length >0)
+          stepSlideShow();
+      }
+
       var tid = setInterval(function () {
           if (document.readyState !== 'complete') return;
           clearInterval(tid);
           addEvent();
       }, 200);
 
+      document.onkeydown = function () {
+        switch (event.keyCode) {
+          //start
+          case 13: // Enter
+          case 32: // Spacebar
+             startSlideShow();
+            break;
+          //stop
+          case 27: // Escape
+          case 35: // End
+          case 46: // Delete
+          case 19: // Pause-break
+            stopSlideShow();
+            break;
+          //next
+          case 40: // Down arrow
+          case 37: // Left arrow
+          case 9: // Tab
+          case 45: // Insert
+          case 34: // Page Down
+            nextSlide();
+            break;
+          //previous
+          case 38: // Up arrow
+          case 39: // Right arrow
+          case 8: // Backspace
+          case 36: // Home
+          case 33: // Page Up
+            previousSlide();
+            break;
+          //nothing
+          // case 17: // Ctrl
+          // case 18: // Alt
+          // case 16: // Shift
+          // case 20: // Caps-lock
+          // case 91: // Windows key
+          // case 93: // Windows option key
+          // case 144: // Numlock
+          // case 145: // Scroll-lock
+          }
+        }
     </script>
     <style>
       body {
