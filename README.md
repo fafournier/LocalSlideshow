@@ -7,3 +7,6 @@ There's not many bells or whisles. This was just a little experiment to build th
 Pull requests to improve or add functionalities are welcome.
 
 One of the main missing thing is a loading indicator while the browser reads the folders. I tested with 21k files in 200+ sub-folders. It works but takes a good few minutes to reach loading the first image.
+
+# Compatibility
+Uses webkitdirectory [https://caniuse.com/#search=webkitdirectory] so this page is currently only compatible with Edge, Chrome and Firefox as well as their derivative. The mobile versions of these browsers may not support this yet.
