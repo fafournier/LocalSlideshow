@@ -88,7 +88,6 @@
       }
       function stepSlideShow(){
         if(index > files.length) stopSlideShow();
-        // console.log("file", index, files[index], URL.createObjectURL(files[index]), document.getElementById('imageDisplayed'));
         if(files && files[index] && files[index].type.indexOf("image/") == 0){
           document.getElementById('imageId').value = index;
           document.getElementById('imageDisplayed').src = URL.createObjectURL(files[index]);
@@ -147,43 +146,14 @@
       }, 200);
       document.onkeydown = function () {
         switch (event.keyCode) {
-          //start
-          case 13: // Enter
-          case 32: // Spacebar
-             startSlideShow();
-            break;
-          //stop
-          case 27: // Escape
-          case 35: // End
-          case 46: // Delete
-          case 19: // Pause-break
-            stopSlideShow();
-            break;
-          //next
-          case 40: // Down arrow
-          case 37: // Left arrow
-          case 9: // Tab
-          case 45: // Insert
-          case 34: // Page Down
-            nextSlide();
-            break;
-          //previous
-          case 38: // Up arrow
-          case 39: // Right arrow
-          case 8: // Backspace
-          case 36: // Home
-          case 33: // Page Up
-            previousSlide();
-            break;
-          //nothing
-          // case 17: // Ctrl
-          // case 18: // Alt
-          // case 16: // Shift
-          // case 20: // Caps-lock
-          // case 91: // Windows key
-          // case 93: // Windows option key
-          // case 144: // Numlock
-          // case 145: // Scroll-lock
+          case 13: /* Enter */ case 32: /* Spacebar */
+            startSlideShow(); break;
+          case 27: /* Escape */ case 35: /* End */ case 46: /* Delete */ case 19: /* Pause-break */
+            stopSlideShow(); break;
+          case 40: /* Down arrow */ case 37: /* Left arrow */ case 9: /* Tab */ case 45: /* Insert */ case 34: /* Page Down */
+            nextSlide(); break;
+          case 38: /* Up arrow */ case 39: /* Right arrow */ case 8: /* Backspace */ case 36: /* Home */ case 33: /* Page Up */
+            previousSlide(); break;
           }
         }
     </script>
